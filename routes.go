@@ -32,6 +32,6 @@ var authroutes = Routes{
 		"GetToken",
 		"POST",
 		"/token",
-		RequestAuthToken,
+		AuthToken,
 	},
 }
