@@ -39,6 +39,8 @@ func AuthN(w http.ResponseWriter, r *http.Request) {
 func AuthToken(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
+	fmt.Println("Remote Host: ", r.RemoteAddr)
+
 	// Now, we create the JWT from the info in the query parameters
 	//fmt.Println("Path: ", r.URL.Path)
 	//fmt.Println("RawQuery: ", r.URL.RawQuery)
@@ -69,6 +71,8 @@ func AuthToken(w http.ResponseWriter, r *http.Request) {
 	//fmt.Println(username)
 	//fmt.Println(password)
 
+	// TODO this is where we would be handling Authentication (make sure this user exists in our Access Control List)
+
 	fmt.Println("-----------------------------------")
 
 	// Handle creating the claim set
@@ -76,7 +80,7 @@ func AuthToken(w http.ResponseWriter, r *http.Request) {
 	claimSet := &ClaimSet{
 		Issuer:         "localhost:7000", // or 172.20.80.221:7000 -- the auth server
 		Subject:        "",
-		Audience:       "localhost:443",                                               // the docker registry address
+		Audience:       r.RemoteAddr,                                                   // the docker registry address
 		ExpirationTime: uint64(time.Now().Add(time.Minute * time.Duration(10)).Unix()), // always now + 10 minutes time
 		NotBefore:      uint64(time.Now().Unix()),
 		IssuedAt:       uint64(time.Now().Unix()),

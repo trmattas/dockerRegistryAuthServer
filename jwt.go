@@ -16,7 +16,7 @@ type JoseHeader struct {
 type ClaimSet struct {
 	Issuer         StringOrUri   `json:"iss"`    // The issuer of the token, typically the fqdn of the authorization server.
 	Subject        StringOrUri   `json:"sub"`    // The subject of the token; the name or id of the client which requested it. This should be empty (`""`) if the client did not authenticate.
-	Audience       StringOrUri   `json:"aud"`    // The intended audience of the token; the name or id of the service which will verify the token to authorize the client/subject.
+	Audience       string        `json:"aud"`    // The intended audience of the token; the name or id of the service which will verify the token to authorize the client/subject.
 	ExpirationTime uint64        `json:"exp"`    // The token should only be considered valid up to this specified date and time.
 	NotBefore      uint64        `json:"nbf"`    // The token should not be considered valid before this specified date and time.
 	IssuedAt       uint64        `json:"iat"`    // Specifies the date and time which the Authorization server generated this token.

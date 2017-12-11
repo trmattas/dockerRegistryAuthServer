@@ -16,12 +16,12 @@ type Routes []Route
 // Some Routes as an example
 // These routes are for the authorization server
 var authroutes = Routes{
-	/*Route{
-		"Auth",
+	Route{
+		"GetToken",
 		"GET",
 		"/token",
-		Auth,
-	},
+		AuthToken,
+	},/*
 	Route{
 		"Authn",
 		"GET",
@@ -29,7 +29,7 @@ var authroutes = Routes{
 		AuthN,
 	},*/
 	Route{
-		"GetToken",
+		"PostToken",
 		"POST",
 		"/token",
 		AuthToken,
