@@ -12,5 +12,5 @@ func main() {
 
 	router := NewAuthRouter()
 
-	log.Fatal(http.ListenAndServeTLS(":7000", "domain.crt", "domain.key", router))
+	log.Fatal(http.ListenAndServeTLS(":7000", "/root/certs/domain.crt", "/root/certs/domain.key", router))
 }

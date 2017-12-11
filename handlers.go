@@ -76,7 +76,7 @@ func AuthToken(w http.ResponseWriter, r *http.Request) {
 	claimSet := &ClaimSet{
 		Issuer:         "localhost:7000", // or 172.20.80.221:7000 -- the auth server
 		Subject:        "",
-		Audience:       "localhost:5000",                                               // the docker registry address
+		Audience:       "localhost:443",                                               // the docker registry address
 		ExpirationTime: uint64(time.Now().Add(time.Minute * time.Duration(10)).Unix()), // always now + 10 minutes time
 		NotBefore:      uint64(time.Now().Unix()),
 		IssuedAt:       uint64(time.Now().Unix()),
@@ -102,7 +102,7 @@ func AuthToken(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(string(jsonClaimSet))
 
 	// Create the "kid", from the DER encoded key
-	derKeyAsBytes, err0 := ioutil.ReadFile("pkcs8_1024.der")
+	derKeyAsBytes, err0 := ioutil.ReadFile("/root/go/src/dockerRegistryAuthServer/pkcs8_1024.der")
 	if err0 != nil {
 		panic(err0)
 	}
@@ -117,7 +117,7 @@ func AuthToken(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Create the actual JWT, using the PEM encoded key, as well as claimset and header
-	token := CreateRS256Token(claimSet, header, "pkcs8_1024.pem")
+	token := CreateRS256Token(claimSet, header, "/root/go/src/dockerRegistryAuthServer/pkcs8_1024.pem")
 
 	// pack the token into the right header
 	//fmt.Println(token) // debugging
