@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	//"io/ioutil"
 	"log"
 	"net/http"
 	"time"
@@ -13,5 +12,5 @@ func main() {
 
 	router := NewAuthRouter()
 
-	log.Fatal(http.ListenAndServe(":7000", router))
+	log.Fatal(http.ListenAndServeTLS(":7000", "domain.crt", "domain.key", router))
 }
