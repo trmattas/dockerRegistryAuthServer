@@ -9,6 +9,9 @@ import (
 	"time"
 )
 
+func Index(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "Hello, user. This is the auth server for a Docker registry.")
+}
 /*
 // can remove
 func Auth(w http.ResponseWriter, r *http.Request) {
@@ -78,7 +81,7 @@ func AuthToken(w http.ResponseWriter, r *http.Request) {
 	// Handle creating the claim set
 	var scope []ScopeAccess
 	claimSet := &ClaimSet{
-		Issuer:         "localhost:7000", // or 172.20.80.221:7000 -- the auth server
+		Issuer:         "auth-server", // the auth server -- this string has to directly match what is in the config file
 		Subject:        "",
 		Audience:       r.RemoteAddr,                                                   // the docker registry address
 		ExpirationTime: uint64(time.Now().Add(time.Minute * time.Duration(10)).Unix()), // always now + 10 minutes time

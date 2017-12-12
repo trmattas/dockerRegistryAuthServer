@@ -17,6 +17,12 @@ type Routes []Route
 // These routes are for the authorization server
 var authroutes = Routes{
 	Route{
+		"Index",
+		"GET",
+		"/index",
+		Index,
+	},
+	Route{
 		"GetToken",
 		"GET",
 		"/token",
