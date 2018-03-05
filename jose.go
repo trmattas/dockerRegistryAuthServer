@@ -19,8 +19,6 @@ func CreateRS256Token(set *ClaimSet, header *JoseHeader, keyPath string) string 
 		panic(err)
 	}
 
-	//fmt.Println(string(keyAsBytes))
-
 	privateKey, err2 := Rsa.ReadPrivate(keyAsBytes)
 	if err2 != nil {
 		panic(err2)

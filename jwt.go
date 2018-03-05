@@ -1,11 +1,5 @@
 package main
 
-//type JsonWebToken struct {
-//	Token    string `json:"token"`
-//	header   JoseHeader
-//	claimSet ClaimSet
-//}
-
 type JoseHeader struct {
 	Type  string `json:"typ"`
 	Algo  string `json:"alg"`

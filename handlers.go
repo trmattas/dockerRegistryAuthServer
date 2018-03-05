@@ -5,38 +5,12 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	//"net/http/httputil"
 	"time"
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "Hello, user. This is the auth server for a Docker registry.")
 }
-/*
-// can remove
-func Auth(w http.ResponseWriter, r *http.Request) {
-
-	fmt.Println(r.URL.Query().Get("service"))
-
-	w.Header().Set("Content-Type", "application/json")
-
-	err := json.NewEncoder(w).Encode("blahblah")
-	if err != nil {
-		panic(err)
-	}
-}
-
-// can remove
-func AuthN(w http.ResponseWriter, r *http.Request) {
-	body, err := httputil.DumpRequest(r, true)
-
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println(string(body))
-}
-*/
 
 // Handles the POST request asking for an Oauth2 bearer token in JWT format
 func AuthToken(w http.ResponseWriter, r *http.Request) {
@@ -45,8 +19,6 @@ func AuthToken(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Remote Host: ", r.RemoteAddr)
 
 	// Now, we create the JWT from the info in the query parameters
-	//fmt.Println("Path: ", r.URL.Path)
-	//fmt.Println("RawQuery: ", r.URL.RawQuery)
 
 	// Extract parameters from encoded query parameter set
 	values := r.URL.Query()
@@ -62,19 +34,22 @@ func AuthToken(w http.ResponseWriter, r *http.Request) {
 	accessType = values.Get(ACCESS_TYPE)
 	rawScope = values.Get(SCOPE)
 	refreshToken = values.Get(REFRESH_TOKEN)
+	// ToDo -- Docker Registry Auth only (for now) uses the Password Authorization Grant Type
+	// TODO need to refactor
+	// see https://docs.docker.com/registry/spec/auth/oauth/
 	//username = values.Get(USERNAME)
 	//password = values.Get(PASSWORD)
 
+
+	// debugging
 	fmt.Println(grantType)
 	fmt.Println(service)
 	fmt.Println(clientId)
 	fmt.Println(accessType)
 	fmt.Println(rawScope)
 	fmt.Println(refreshToken)
-	//fmt.Println(username)
-	//fmt.Println(password)
 
-	// TODO this is where we would be handling Authentication (make sure this user exists in our Access Control List)
+	// TODO this is where we would be handling AuthZ (make sure this user with this action in our ACL)
 
 	fmt.Println("-----------------------------------")
 
@@ -127,14 +102,11 @@ func AuthToken(w http.ResponseWriter, r *http.Request) {
 	token := CreateRS256Token(claimSet, header, "/root/go/src/dockerRegistryAuthServer/pkcs8_1024.pem")
 
 	// pack the token into the right header
-	//fmt.Println(token) // debugging
-
 	response := Response{
 		AccessToken: token,
 		ExpiresIn:   600, // 600 seconds = 10 minutes
 		Scope:       ScopeToResponse(scope),
 	}
-	// return the right JSON
 
 	if err := json.NewEncoder(w).Encode(response); err != nil {
 		panic(err)
